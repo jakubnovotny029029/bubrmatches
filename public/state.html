@@ -25,6 +25,8 @@
 
 <h2>Aktualni stav: <span id="currentState"></span></h2>
 
+<audio id="audio" src="taptap.mp3"></audio>
+
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
@@ -32,6 +34,7 @@
 
     socket.on('state-change', function(state) {
         $('#currentState').removeClass().addClass('state' + state).text(state);
+        $('#audio')[0].play();
     });
 
     console.log('Aktualni stav po nacteni stranky: ' + $('#currentState').text());
@@ -51,6 +54,7 @@
     socket.on('state-change', function(state) {
         console.log(`Stav zmenen na ${state}.`);
         $('#currentState').removeClass().addClass('state' + state).text(state);
+        $('#audio')[0].play();
     });
 
     socket.on('current-state', function(state) {
