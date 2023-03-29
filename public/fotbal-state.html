@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>HOKEJ-STAV</title>
+  <title>FOTBAL-STAV</title>
   <style>
 
     body {
@@ -79,6 +79,15 @@
   <h2>Aktuální stav: <span id="currentState"></span></h2>
   <audio id="tapAudio" src="taptap.mp3"></audio>
   <audio id="goalAudio" src="goal.mp3"></audio>
+  <button id="btnA" class="button">ÚTOK DOMÁCÍ</button>
+  <button id="btnB" class="button">ÚTOK HOSTÉ</button>
+  <button id="btnC" class="button">GÓL DOMÁCÍ</button>
+  <button id="btnD" class="button">GÓL HOSTÉ</button>
+  <button id="btnE" class="button">ROH DOMÁCÍ</button>
+  <button id="btnF" class="button">PŘÍMÁK DOMÁCÍ</button>
+  <button id="btnG" class="button">ROH HOSTÉ</button>
+  <button id="btnH" class="button">PŘÍMÁK HOSTÉ</button>
+  <button id="btnI" class="button">NIC</button>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -101,6 +110,7 @@
     if (state === 'C' || state === 'D') {
       $('#goalAudio')[0].play();
     } else if (state === 'A' || state === 'B' || state === 'E' || state === 'F' || state === 'G' || state === 'H') {
+      $('#tapAudio')[0].currentTime = 0;
       $('#tapAudio')[0].play();
     }
   });
