@@ -95,13 +95,29 @@
     console.log('Spojení se socketem bylo přerušeno.');
   });
 
+  var tapAudioList = [];
+  var goalAudioList = [];
+
+  function playAudio(audioList, audioElement) {
+    var audio = new Audio(audioElement.src);
+    audioList.push(audio);
+
+    // play the audio immediately
+    audio.play();
+
+    // remove the audio from the list once it's done playing
+    audio.addEventListener('ended', function() {
+      audioList.splice(audioList.indexOf(audio), 1);
+    });
+  }
+
   socket.on('state-change-2', function(state) {
     console.log(`Stav změněn na ${state}.`);
     $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
     if (state === 'C' || state === 'D') {
-      $('#goalAudio')[0].play();
+      playAudio(goalAudioList, $('#goalAudio')[0]);
     } else if (state === 'A' || state === 'B' || state === 'E' || state === 'F' || state === 'G' || state === 'H') {
-      $('#tapAudio')[0].play();
+      playAudio(tapAudioList, $('#tapAudio')[0]);
     }
   });
 
