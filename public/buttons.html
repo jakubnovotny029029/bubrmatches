@@ -66,22 +66,12 @@
 <h2>Aktualni stav: <span id="currentState"></span></h2>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    // Připojíme se na server pomocí socket.io
     var socket = io.connect('https://bubr-matches.herokuapp.com/');
 
-    $('#btnA').click(function() {
-        socket.emit('state-change', 'A');
-    });
-
-    $('#btnB').click(function() {
-        socket.emit('state-change', 'B');
-    });
-
-    $('#btnC').click(function() {
-        socket.emit('state-change', 'C');
-    });
-
-    $('#btnD').click(function() {
-        socket.emit('state-change', 'D');
+    // Aktualizujeme stav v HTML
+    socket.on('state-update', function(data) {
+        $('#currentState').text(data.currentState);
     });
 </script>
 </body>
