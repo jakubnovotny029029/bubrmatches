@@ -104,23 +104,9 @@
     console.log(`Stav změněn na ${state}.`);
     $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
     if (state === 'C' || state === 'D') {
-      if (!goalAudioPlaying) {
-        goalAudioPlaying = true;
-        goalAudio.currentTime = 0;
-        goalAudio.play();
-      } else {
-        var newGoalAudio = new Audio("goal.mp3");
-        newGoalAudio.play();
-      }
+      playAudio($('#goalAudio')[0]);
     } else if (state === 'A' || state === 'B' || state === 'E' || state === 'F' || state === 'G' || state === 'H') {
-      if (!tapAudioPlaying) {
-        tapAudioPlaying = true;
-        tapAudio.currentTime = 0;
-        tapAudio.play();
-      } else {
-        var newTapAudio = new Audio("taptap.mp3");
-        newTapAudio.play();
-      }
+      playAudio($('#tapAudio')[0]);
     }
   });
 
@@ -157,6 +143,16 @@
       return 'NIC';
     }
   }
+
+  function playAudio(audioElement) {
+    if (!audioElement.paused) {
+      var newAudioElement = new Audio(audioElement.src);
+      newAudioElement.play();
+    } else {
+      audioElement.play();
+    }
+  }
+
 </script>
 </body>
 </html>
