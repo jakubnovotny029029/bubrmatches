@@ -74,14 +74,22 @@
 </head>
 <body>
 <a href="index.html">Homepage</a>
+
 <div class="container">
   <h2>Aktuální stav: <span id="currentState"></span></h2>
   <audio id="tapAudio" src="taptap.mp3"></audio>
   <audio id="goalAudio" src="goal.mp3"></audio>
 </div>
+
 <script src="/socket.io/socket.io.js"></script>
+
 <script>
   var socket = io.connect('https://bubr-matches.herokuapp.com/');
+  var goalAudio = new Audio("goal.mp3");
+  var tapAudio = new Audio("taptap.mp3");
+
+  var goalAudioPlaying = false;
+  var tapAudioPlaying = false;
 
   socket.on('connect', function() {
     console.log('Spojení se socketem bylo navázáno.');
@@ -96,21 +104,23 @@
     console.log(`Stav změněn na ${state}.`);
     $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
     if (state === 'C' || state === 'D') {
-      var goalAudio = $('#goalAudio')[0];
-      if (!goalAudio.paused) {
-        var clone = goalAudio.cloneNode();
-        clone.play();
+      if (!goalAudioPlaying) {
+        goalAudioPlaying = true;
+        goalAudio.currentTime = 0;
+        goalAudio.play();
+      } else {
+        var newGoalAudio = new Audio("goal.mp3");
+        newGoalAudio.play();
       }
-      goalAudio.currentTime = 0;
-      goalAudio.play();
     } else if (state === 'A' || state === 'B' || state === 'E' || state === 'F' || state === 'G' || state === 'H') {
-      var tapAudio = $('#tapAudio')[0];
-      if (!tapAudio.paused) {
-        var clone = tapAudio.cloneNode();
-        clone.play();
+      if (!tapAudioPlaying) {
+        tapAudioPlaying = true;
+        tapAudio.currentTime = 0;
+        tapAudio.play();
+      } else {
+        var newTapAudio = new Audio("taptap.mp3");
+        newTapAudio.play();
       }
-      tapAudio.currentTime = 0;
-      tapAudio.play();
     }
   });
 
