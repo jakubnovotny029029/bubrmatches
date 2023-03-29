@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>FOTBAL-STAV</title>
+  <title>HOKEJ-STAV</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -68,7 +68,8 @@
 
 <div class="container">
   <h2>Aktuální stav: <span id="currentState"></span></h2>
-  <audio id="goalAudio" src="taptap.mp3"></audio>
+  <audio id="tapAudio" src="taptap.mp3"></audio>
+  <audio id="goalAudio" src="goal.mp3"></audio>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -88,8 +89,10 @@
   socket.on('state-change-2', function(state) {
     console.log(`Stav změněn na ${state}.`);
     $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
-    if (state === 'C' || state === 'D') {
+    if (state === 'A' || state === 'B') {
       $('#goalAudio')[0].play();
+    } else if (state === 'C' || state === 'D' || state === 'E' || state === 'F' || state === 'G' || state === 'H') {
+      $('#tapAudio')[0].play();
     }
   });
 
@@ -114,6 +117,14 @@
       return 'Gól domácích';
     } else if (state === 'D') {
       return 'Gól hostů';
+    } else if (state === 'E') {
+      return 'Roh domácí';
+    } else if (state === 'F') {
+      return 'Přímák domácích';
+    } else if (state === 'G') {
+      return 'Roh hostů';
+    } else if (state === 'H') {
+      return 'Přímák hostů';
     } else {
       return '';
     }
