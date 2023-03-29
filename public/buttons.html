@@ -64,9 +64,9 @@
 
 
 <h2>Aktualni stav: <span id="currentState"></span></h2>
-<script src="socket.io/client-dist/socket.io.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script>
-    var socket = io.connect('http://localhost:3000');
+    var socket = io.connect('https://bubr-matches.herokuapp.com/');
 
     $('#btnA').click(function() {
         socket.emit('state-change', 'A');

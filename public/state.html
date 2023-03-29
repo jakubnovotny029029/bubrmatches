@@ -25,9 +25,10 @@
 
 <h2>Aktualni stav: <span id="currentState"></span></h2>
 
-<script src="socket.io/client-dist/socket.io.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
 <script>
-    var socket = io.connect('http://localhost:3000');
+    var socket = io.connect('https://bubr-matches.herokuapp.com/');
 
     socket.on('state-change', function(state) {
         $('#currentState').removeClass().addClass('state' + state).text(state);
@@ -36,7 +37,7 @@
     console.log('Aktualni stav po nacteni stranky: ' + $('#currentState').text());
 </script>
 <script>
-    var socket = io.connect('http://localhost:3000');
+    var socket = io.connect('https://bubr-matches.herokuapp.com/');
 
     socket.on('connect', function() {
         console.log('Spojeni se socketem bylo navazano.');
