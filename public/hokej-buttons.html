@@ -59,11 +59,29 @@
             background-color: #ffbd03;
         }
 
+        .active-A {
+            border: 6px solid black;
+        }
+
+        .active-B {
+            border: 6px solid black;
+        }
+
+        .active-C {
+            border: 6px solid black;
+        }
+
+        .active-D {
+            border: 6px solid black;
+        }
+
         @media only screen and (max-width: 1000px) {
             button {
                 width: 35%;
                 margin: 4px 5%;
                 height: 180px;
+                color: black;
+                font-size: 32px;
             }
 
             #actState {
@@ -76,25 +94,26 @@
             #btnA {
                 position: absolute;
                 top: 0;
-                left: 5%;
+                left: 2%;
+                ;
             }
 
             #btnB {
                 position: absolute;
                 top: 0;
-                right: 5%;
+                right: 2%;
             }
 
             #btnC {
                 position: absolute;
                 bottom: 0;
-                left: 5%;
+                left: 2%;
             }
 
             #btnD {
                 position: absolute;
                 bottom: 0;
-                right: 5%;
+                right: 2%;
             }
         }
 
@@ -106,10 +125,10 @@
 <div id="actState">
     <span id="currentState"></span>
 </div>
-<button id="btnA">ÚTOK DOMÁCÍ</button>
-<button id="btnB">ÚTOK HOSTÉ</button>
-<button id="btnC">GÓL DOMÁCÍ</button>
-<button id="btnD">GŮL HOSTÉ</button>
+<button id="btnA" class="button">ÚTOK DOMÁCÍ</button>
+<button id="btnB" class="button">ÚTOK HOSTÉ</button>
+<button id="btnC" class="button">GÓL DOMÁCÍ</button>
+<button id="btnD" class="button">GÓL HOSTÉ</button>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -132,6 +151,8 @@
         console.log(`Aktualni stav: ${state}.`);
         if (state) {
             $('#currentState').text(state);
+            $('.button').removeClass('active-A active-B active-C active-D');
+            $(`#btn${state}`).addClass(`active-${state}`);
         }
     });
 
