@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>BubrMatches</title>
+    <title>HOKEJ</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -85,7 +85,7 @@
 <script>
     var socket = io.connect('https://bubr-matches.herokuapp.com/');
 
-    socket.on('state-change-2', function(state) {
+    socket.on('state-change', function(state) {
         $('#currentState').text(state);
     });
 
@@ -108,19 +108,19 @@
     var socket = io.connect('https://bubr-matches.herokuapp.com/');
 
     $('#btnA').click(function() {
-        socket.emit('state-change-2', 'A');
+        socket.emit('state-change', 'A');
     });
 
     $('#btnB').click(function() {
-        socket.emit('state-change-2', 'B');
+        socket.emit('state-change', 'B');
     });
 
     $('#btnC').click(function() {
-        socket.emit('state-change-2', 'C');
+        socket.emit('state-change', 'C');
     });
 
     $('#btnD').click(function() {
-        socket.emit('state-change-2', 'D');
+        socket.emit('state-change', 'D');
     });
 </script>
 
