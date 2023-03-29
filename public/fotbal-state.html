@@ -85,8 +85,7 @@
 
 <script>
   var socket = io.connect('https://bubr-matches.herokuapp.com/');
-  var taps = [];
-  var goals = [];
+  var goalAudioInstances = [];
 
   socket.on('connect', function() {
     console.log('Spojení se socketem bylo navázáno.');
@@ -101,13 +100,12 @@
     console.log(`Stav změněn na ${state}.`);
     $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
     if (state === 'C' || state === 'D') {
-      var goal = new Audio($('#goalAudio').attr('src'));
-      goals.push(goal);
-      goal.play();
+      var goalAudio = new Audio('goal.mp3');
+      goalAudioInstances.push(goalAudio);
+      goalAudio.play();
     } else if (state === 'A' || state === 'B' || state === 'E' || state === 'F' || state === 'G' || state === 'H') {
-      var tap = new Audio($('#tapAudio').attr('src'));
-      taps.push(tap);
-      tap.play();
+      var tapAudio = new Audio('taptap.mp3');
+      tapAudio.play();
     }
   });
 
@@ -121,22 +119,6 @@
   $(function() {
     console.log('Dokument je připraven.');
     socket.emit('get-state');
-    setInterval(function() {
-      for (var i = 0; i < taps.length; i++) {
-        if (taps[i].currentTime > 0 && taps[i].currentTime < taps[i].duration * 0.5) {
-          var tap = new Audio($('#tapAudio').attr('src'));
-          taps.push(tap);
-          tap.play();
-        }
-      }
-      for (var j = 0; j < goals.length; j++) {
-        if (goals[j].currentTime > 0 && goals[j].currentTime < goals[j].duration * 0.5) {
-          var goal = new Audio($('#goalAudio').attr('src'));
-          goals.push(goal);
-          goal.play();
-        }
-      }
-    }, 100);
   });
 
   function getStateText(state) {
