@@ -55,6 +55,11 @@
             border: 6px solid black;
         }
 
+        button.button.active {
+            border: 6px solid black;
+        }
+
+
         @media only screen and (max-width: 1000px) {
             button {
                 width: 35%;
@@ -126,10 +131,10 @@
         if (state) {
             $('#currentState').text(state);
             $('.button').removeClass('active').addClass('inactive');
-            $(`#btn${state}`).removeClass('inactive').addClass(`active`);
-            $(`#btn${state}`).addClass('active');
+            $(`#btn${state}`).removeClass('inactive').addClass('active');
         }
     });
+
 
     $(function() {
         console.log('Dokument je připraven.');
