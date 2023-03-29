@@ -55,7 +55,7 @@
 </head>
 <body>
 <a href="state.html">Zobrazit aktuální stav</a>
-
+<h2>Aktualni stav: <span id="currentState"></span></h2>
 <button id="btnA">Stav A</button>
 <button id="btnB">Stav B</button>
 <button id="btnC">Stav C</button>
@@ -71,7 +71,7 @@
         $('#currentState').text(data.currentState);
     });
 </script>
-<h2>Aktualni stav: <span id="currentState"></span></h2>
+
 
 <script>
     var socket = io.connect('https://bubr-matches.herokuapp.com/');
