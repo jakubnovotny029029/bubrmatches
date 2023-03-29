@@ -85,11 +85,6 @@
 
 <script>
   var socket = io.connect('https://bubr-matches.herokuapp.com/');
-  var goalAudio = new Audio("goal.mp3");
-  var tapAudio = new Audio("taptap.mp3");
-
-  var goalAudioPlaying = false;
-  var tapAudioPlaying = false;
 
   socket.on('connect', function() {
     console.log('Spojení se socketem bylo navázáno.');
@@ -104,9 +99,19 @@
     console.log(`Stav změněn na ${state}.`);
     $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
     if (state === 'C' || state === 'D') {
-      playAudio($('#goalAudio')[0]);
+      var goalAudio = document.getElementById('goalAudio');
+      if (goalAudio.paused) {
+        goalAudio.play();
+      } else {
+        goalAudio.currentTime = 0;
+      }
     } else if (state === 'A' || state === 'B' || state === 'E' || state === 'F' || state === 'G' || state === 'H') {
-      playAudio($('#tapAudio')[0]);
+      var tapAudio = document.getElementById('tapAudio');
+      if (tapAudio.paused) {
+        tapAudio.play();
+      } else {
+        tapAudio.currentTime = 0;
+      }
     }
   });
 
@@ -143,16 +148,7 @@
       return 'NIC';
     }
   }
-
-  function playAudio(audioElement) {
-    if (!audioElement.paused) {
-      var newAudioElement = new Audio(audioElement.src);
-      newAudioElement.play();
-    } else {
-      audioElement.play();
-    }
-  }
-
 </script>
 </body>
+
 </html>
