@@ -61,7 +61,7 @@
 <button id="btnC">Stav C</button>
 <button id="btnD">Stav D</button>
 
-
+<script src="/socket.io/socket.io.js"></script>
 <script>
     // Připojíme se na server pomocí socket.io
     var socket = io.connect('https://bubr-matches.herokuapp.com/');
@@ -72,7 +72,7 @@
     });
 </script>
 <h2>Aktualni stav: <span id="currentState"></span></h2>
-<script src="/socket.io/socket.io.js"></script>
+
 <script>
     var socket = io.connect('https://bubr-matches.herokuapp.com/');
 
