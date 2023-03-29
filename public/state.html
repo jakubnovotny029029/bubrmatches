@@ -31,13 +31,14 @@
 
 <script>
     var socket = io.connect('https://bubr-matches.herokuapp.com/');
+    var audio = new Audio("taptap.mp3");
 
     socket.on('state-change', function(state) {
         $('#currentState').removeClass().addClass('state' + state).text(state);
-        $('#audio')[0].play();
+        audio.currentTime = 0; // nastavíme čas přehrávání zvuku na začátek
+        audio.play(); // přehrajeme zvuk
     });
 
-    console.log('Aktualni stav po nacteni stranky: ' + $('#currentState').text());
 </script>
 <script>
     var socket = io.connect('https://bubr-matches.herokuapp.com/');
