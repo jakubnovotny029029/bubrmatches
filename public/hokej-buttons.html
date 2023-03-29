@@ -127,6 +127,7 @@
             $('#currentState').text(state);
             $('.button').removeClass('active').addClass('inactive');
             $(`#btn${state}`).removeClass('inactive').addClass(`active`);
+            $(`#btn${state}`).addClass('active');
         }
     });
 
