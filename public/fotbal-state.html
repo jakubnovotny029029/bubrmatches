@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>HOKEJ-STAV</title>
   <style>
+
     body {
       font-family: Arial, sans-serif;
       background-color: #F5F5F5;
@@ -33,6 +34,10 @@
       margin-bottom: 64px;
     }
 
+    .button {
+      background-color: #4CAF50;
+    }
+
     .container {
       width: 80%;
       margin: 0 auto;
@@ -57,8 +62,8 @@
     .stateC {
       color: #ff5252;
     }
-    .stateD {
-      color: #ff5252;
+    .stateI {
+      color: #2D2727;
     }
   </style>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -89,9 +94,9 @@
   socket.on('state-change-2', function(state) {
     console.log(`Stav změněn na ${state}.`);
     $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
-    if (state === 'A' || state === 'B') {
+    if (state === 'C' || state === 'D') {
       $('#goalAudio')[0].play();
-    } else if (state === 'C' || state === 'D' || state === 'E' || state === 'F' || state === 'G' || state === 'H') {
+    } else if (state === 'A' || state === 'B' || state === 'E' || state === 'F' || state === 'G' || state === 'H') {
       $('#tapAudio')[0].play();
     }
   });
