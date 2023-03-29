@@ -74,24 +74,12 @@
 </head>
 <body>
 <a href="index.html">Homepage</a>
-
 <div class="container">
   <h2>Aktuální stav: <span id="currentState"></span></h2>
   <audio id="tapAudio" src="taptap.mp3"></audio>
   <audio id="goalAudio" src="goal.mp3"></audio>
-  <button id="btnA" class="button">ÚTOK DOMÁCÍ</button>
-  <button id="btnB" class="button">ÚTOK HOSTÉ</button>
-  <button id="btnC" class="button">GÓL DOMÁCÍ</button>
-  <button id="btnD" class="button">GÓL HOSTÉ</button>
-  <button id="btnE" class="button">ROH DOMÁCÍ</button>
-  <button id="btnF" class="button">PŘÍMÁK DOMÁCÍ</button>
-  <button id="btnG" class="button">ROH HOSTÉ</button>
-  <button id="btnH" class="button">PŘÍMÁK HOSTÉ</button>
-  <button id="btnI" class="button">NIC</button>
 </div>
-
 <script src="/socket.io/socket.io.js"></script>
-
 <script>
   var socket = io.connect('https://bubr-matches.herokuapp.com/');
 
@@ -108,10 +96,21 @@
     console.log(`Stav změněn na ${state}.`);
     $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
     if (state === 'C' || state === 'D') {
-      $('#goalAudio')[0].play();
+      var goalAudio = $('#goalAudio')[0];
+      if (!goalAudio.paused) {
+        var clone = goalAudio.cloneNode();
+        clone.play();
+      }
+      goalAudio.currentTime = 0;
+      goalAudio.play();
     } else if (state === 'A' || state === 'B' || state === 'E' || state === 'F' || state === 'G' || state === 'H') {
-      $('#tapAudio')[0].currentTime = 0;
-      $('#tapAudio')[0].play();
+      var tapAudio = $('#tapAudio')[0];
+      if (!tapAudio.paused) {
+        var clone = tapAudio.cloneNode();
+        clone.play();
+      }
+      tapAudio.currentTime = 0;
+      tapAudio.play();
     }
   });
 
