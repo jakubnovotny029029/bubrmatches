@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
@@ -31,6 +32,9 @@ io.on('connection', (socket) => {
         io.to(socket.id).emit('current-state', currentState);
     });
 });
+
+// middleware pro servírování statických souborů z adresáře 'public'
+app.use(express.static(path.join(__dirname, 'public')));
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => {
