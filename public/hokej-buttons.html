@@ -12,20 +12,6 @@
             flex-wrap: wrap;
         }
 
-        h2 {
-            font-size: 2em;
-            margin-top: 2em;
-        }
-
-        #actState {
-            width: 100%;
-        }
-
-        #currentState {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-
         button {
             background-color: #4CAF50;
             color: white;
@@ -49,28 +35,22 @@
         #btnA {
             background-color: #4681f4;
         }
+
         #btnB {
             background-color: #33b249;
         }
+
         #btnC {
             background-color: #80669d;
         }
+
         #btnD {
             background-color: #ffbd03;
         }
 
-        button.button.active-A {
-            border: 6px solid black;
-        }
-
-        button.button.active-B {
-            border: 6px solid black;
-        }
-
-        button.button.active-C {
-            border: 6px solid black;
-        }
-
+        button.button.active-A,
+        button.button.active-B,
+        button.button.active-C,
         button.button.active-D {
             border: 6px solid black;
         }
@@ -95,7 +75,6 @@
                 position: absolute;
                 top: 0;
                 left: 2%;
-                ;
             }
 
             #btnB {
@@ -116,13 +95,11 @@
                 right: 2%;
             }
         }
-
-
     </style>
 
 </head>
 <body>
-<div id="actState">
+<div>
     <span id="currentState"></span>
 </div>
 <button id="btnA" class="button">ÚTOK DOMÁCÍ</button>
@@ -139,52 +116,41 @@
     socket.on('state-update', function(data) {
         $('#currentState').text(data.currentState);
     });
-</script>
-<script>
-    var socket = io.connect('https://bubr-matches.herokuapp.com/');
 
     socket.on('state-change', function(state) {
         $('#currentState').text(state);
     });
 
     socket.on('current-state', function(state) {
-        console.log(`Aktualni stav: ${state}.`);
+        console.log(`Aktuální stav: ${state}.`);
         if (state) {
             $('#currentState').text(state);
-            $('.button').removeClass('active-A active-B active-C active-D').addClass(`inactive`);
-            $(`#btn${state}`).removeClass('inactive').addClass(`active-${state}`);
+            $('.button').removeClass('active').addClass('inactive');
+            $(`#btn${state}`).removeClass('inactive').addClass(`active`);
         }
     });
 
-
-
     $(function() {
-        console.log('Dokument je pripraven.');
+        console.log('Dokument je připraven.');
 
         socket.emit('get-state');
+
+        $('#btnA').click(function() {
+            socket.emit('state-change', 'A');
+        });
+
+        $('#btnB').click(function() {
+            socket.emit('state-change', 'B');
+        });
+
+        $('#btnC').click(function() {
+            socket.emit('state-change', 'C');
+        });
+
+        $('#btnD').click(function() {
+            socket.emit('state-change', 'D');
+        });
     });
 </script>
-
-
-<script>
-    var socket = io.connect('https://bubr-matches.herokuapp.com/');
-
-    $('#btnA').click(function() {
-        socket.emit('state-change', 'A');
-    });
-
-    $('#btnB').click(function() {
-        socket.emit('state-change', 'B');
-    });
-
-    $('#btnC').click(function() {
-        socket.emit('state-change', 'C');
-    });
-
-    $('#btnD').click(function() {
-        socket.emit('state-change', 'D');
-    });
-</script>
-
 </body>
 </html>
