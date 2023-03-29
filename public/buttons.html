@@ -17,6 +17,10 @@
             margin-top: 2em;
         }
 
+        #actState {
+            width: 100%;
+        }
+
         #currentState {
             font-size: 1.5em;
             font-weight: bold;
@@ -60,7 +64,9 @@
 </head>
 <body>
 <a href="state.html">Zobrazit aktuální stav</a>
-<h2>Aktualni stav: <span id="currentState"></span></h2>
+<div id="actState">
+    <h2>Aktualni stav: <span id="currentState"></span></h2>
+</div>
 <button id="btnA">Stav A</button>
 <button id="btnB">Stav B</button>
 <button id="btnC">Stav C</button>
