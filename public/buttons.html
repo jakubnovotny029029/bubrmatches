@@ -71,6 +71,26 @@
         $('#currentState').text(data.currentState);
     });
 </script>
+<script>
+    var socket = io.connect('https://bubr-matches.herokuapp.com/');
+
+    socket.on('state-change', function(state) {
+        $('#currentState').text(state);
+    });
+
+    socket.on('current-state', function(state) {
+        console.log(`Aktualni stav: ${state}.`);
+        if (state) {
+            $('#currentState').text(state);
+        }
+    });
+
+    $(function() {
+        console.log('Dokument je pripraven.');
+
+        socket.emit('get-state');
+    });
+</script>
 
 
 <script>
