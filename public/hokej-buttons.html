@@ -151,10 +151,11 @@
         console.log(`Aktualni stav: ${state}.`);
         if (state) {
             $('#currentState').text(state);
-            $('.button').removeClass('active-A active-B active-C active-D');
-            $(`#btn${state}`).addClass(`active-${state}`);
+            $('.button').removeClass('active-A active-B active-C active-D').addClass(`inactive`);
+            $(`#btn${state}`).removeClass('inactive').addClass(`active-${state}`);
         }
     });
+
 
     $(function() {
         console.log('Dokument je pripraven.');
