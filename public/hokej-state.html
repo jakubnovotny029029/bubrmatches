@@ -34,7 +34,7 @@
     var audio = new Audio("taptap.mp3");
 
     socket.on('state-change', function(state) {
-        $('#currentState').removeClass().addClass('state' + state).text(state);
+        $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
         audio.currentTime = 0; // nastavíme čas přehrávání zvuku na začátek
         audio.play(); // přehrajeme zvuk
     });
@@ -54,14 +54,14 @@
 
     socket.on('state-change', function(state) {
         console.log(`Stav zmenen na ${state}.`);
-        $('#currentState').removeClass().addClass('state' + state).text(state);
+        $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
         $('#audio')[0].play();
     });
 
     socket.on('current-state', function(state) {
         console.log(`Aktualni stav: ${state}.`);
         if (state) {
-            $('#currentState').removeClass().addClass('state' + state).text(state);
+            $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
         }
     });
 
@@ -70,8 +70,21 @@
 
         socket.emit('get-state');
     });
+
+    function getStateText(state) {
+        if (state === 'A') {
+            return 'Útok domácích';
+        } else if (state === 'B') {
+            return 'Útok hostů';
+        } else if (state === 'C') {
+            return 'Gól domácích';
+        } else if (state === 'D') {
+            return 'Gól hostů';
+        } else {
+            return '';
+        }
+    }
 </script>
-
-
 </body>
+
 </html>

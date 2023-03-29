@@ -141,14 +141,26 @@
 
         socket.emit('get-state');
 
-        $('.button').click(function() {
-            var clickedButton = $(this).attr('id');
-            socket.emit('state-change', clickedButton[clickedButton.length - 1]);
-            $('.button.active').removeClass('active').addClass('inactive');
+        $('#btnA').click(function() {
+            socket.emit('state-change', 'A');
+            $(this).removeClass('inactive').addClass('active');
+        });
+
+        $('#btnB').click(function() {
+            socket.emit('state-change', 'B');
+            $(this).removeClass('inactive').addClass('active');
+        });
+
+        $('#btnC').click(function() {
+            socket.emit('state-change', 'C');
+            $(this).removeClass('inactive').addClass('active');
+        });
+
+        $('#btnD').click(function() {
+            socket.emit('state-change', 'D');
             $(this).removeClass('inactive').addClass('active');
         });
     });
-
 
 </script>
 </body>
