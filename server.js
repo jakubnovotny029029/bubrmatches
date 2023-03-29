@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
 });
 
 // middleware pro servírování statických souborů z adresáře 'public'
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => {
