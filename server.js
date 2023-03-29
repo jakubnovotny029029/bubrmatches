@@ -12,15 +12,24 @@ const io = socketio(server, {
     }
 });
 
-let currentState = null;
+let currentState = {
+    state1: null,
+    state2: null,
+};
 
 io.on('connection', (socket) => {
     console.log('Uživatel se připojil.');
 
     socket.on('state-change', (state) => {
         console.log(`Stav změněn na ${state}`);
-        currentState = state;
+        currentState.state1 = state;
         io.emit('state-change', state);
+    });
+
+    socket.on('state-change-2', (state) => {
+        console.log(`Stav změněn na ${state}`);
+        currentState.state2 = state;
+        io.emit('state-change-2', state);
     });
 
     socket.on('disconnect', () => {
@@ -29,7 +38,12 @@ io.on('connection', (socket) => {
 
     socket.on('get-state', () => {
         console.log('Žádost o aktuální stav.');
-        io.to(socket.id).emit('current-state', currentState);
+        io.to(socket.id).emit('current-state', currentState.state1);
+    });
+
+    socket.on('get-state-2', () => {
+        console.log('Žádost o aktuální stav 2.');
+        io.to(socket.id).emit('current-state-2', currentState.state2);
     });
 });
 

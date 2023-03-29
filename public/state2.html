@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>BubrMatches - State 2</title>
+  <style>
+    .stateA {
+      color: purple;
+    }
+    .stateB {
+      color: orange;
+    }
+    .stateC {
+      color: pink;
+    }
+    .stateD {
+      color: gray;
+    }
+    #currentState { font-size: 128px; }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<a href="buttons2.html">Zpět na tlačítka 2</a>
+
+<h2>Aktualni stav: <span id="currentState"></span></h2>
+
+<audio id="audio" src="taptap.mp3"></audio>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+  var socket = io.connect('https://bubr-matches.herokuapp.com/');
+  var audio = new Audio("taptap.mp3");
+
+  socket.on('state-change-2', function(state) {
+    $('#currentState').removeClass().addClass('state' + state).text(state);
+    audio.currentTime = 0; // nastavíme čas přehrávání zvuku na začátek
+    audio.play(); // přehrajeme zvuk
+  });
+
+</script>
+<script>
+  var socket = io.connect('https://bubr-matches.herokuapp.com/');
+
+  socket.on('connect', function() {
+    console.log('Spojeni se socketem bylo navazano.');
+    socket.emit('get-state-2');
+  });
+
+  socket.on('disconnect', function() {
+    console.log('Spojeni se socketem bylo preruseno.');
+  });
+
+  socket.on('state-change-2', function(state) {
+    console.log(`Stav zmenen na ${state}.`);
+    $('#currentState').removeClass().addClass('state' + state).text(state);
+    $('#audio')[0].play();
+  });
+
+  socket.on('current-state-2', function(state) {
+    console.log(`Aktualni stav: ${state}.`);
+    if (state) {
+      $('#currentState').removeClass().addClass('state' + state).text(state);
+    }
+  });
+
+  $(function() {
+    console.log('Dokument je pripraven.');
+
+    socket.emit('get-state-2');
+  });
+</script>
+
+
+</body>
+</html>
