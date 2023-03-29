@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>FOTBAL-BUTTONS</title>
+    <title>HOKEJ-BUTTONS</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -12,34 +12,21 @@
             flex-wrap: wrap;
         }
 
-        h2 {
-            font-size: 2em;
-            margin-top: 2em;
-        }
-
-        #actState {
-            width: 100%;
-        }
-
-        #currentState {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-
         button {
             background-color: #4CAF50;
-            color: white;
+            color: black;
             border: none;
             border-radius: 5px;
             padding: 15px 32px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 16px;
+            font-size: 32px;
             margin: 4px 2%;
             cursor: pointer;
             width: 40%;
             height: 150px;
+
         }
 
         button:hover {
@@ -49,28 +36,79 @@
         #btnA {
             background-color: #4681f4;
         }
+
         #btnB {
-            background-color: #33b249;
-        }
-        #btnC {
-            background-color: #80669d;
-        }
-        #btnD {
-            background-color: #ffbd03;
+            background-color: #4681f4;
         }
 
+        #btnC {
+            background-color: #ff5252;
+        }
+
+        #btnD {
+            background-color: #ff5252;
+        }
+
+        button.button.active-A,
+        button.button.active-B,
+        button.button.active-C,
+        button.button.active-D {
+            border: 6px solid black;
+        }
+
+        button.button.active {
+            border: 6px solid black;
+        }
+
+
+        @media only screen and (max-width: 1000px) {
+            button {
+                width: 35%;
+                margin: 4px 5%;
+                height: 180px;
+                color: black;
+                font-size: 32px;
+            }
+
+            #actState {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #btnA {
+                position: absolute;
+                top: 0;
+                left: 2%;
+            }
+
+            #btnB {
+                position: absolute;
+                top: 0;
+                right: 2%;
+            }
+
+            #btnC {
+                position: absolute;
+                bottom: 0;
+                left: 2%;
+            }
+
+            #btnD {
+                position: absolute;
+                bottom: 0;
+                right: 2%;
+            }
+        }
     </style>
 
 </head>
 <body>
-<a href="index.html">Homepage</a>
-<div id="actState">
-    <h2>Aktualni stav: <span id="currentState"></span></h2>
-</div>
-<button id="btnA">Stav A</button>
-<button id="btnB">Stav B</button>
-<button id="btnC">Stav C</button>
-<button id="btnD">Stav D</button>
+<button id="btnA" class="button">ÚTOK DOMÁCÍ</button>
+<button id="btnB" class="button">ÚTOK HOSTÉ</button>
+<button id="btnC" class="button">GÓL DOMÁCÍ</button>
+<button id="btnD" class="button">GÓL HOSTÉ</button>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -81,48 +119,38 @@
     socket.on('state-update', function(data) {
         $('#currentState').text(data.currentState);
     });
-</script>
-<script>
-    var socket = io.connect('https://bubr-matches.herokuapp.com/');
 
     socket.on('state-change-2', function(state) {
         $('#currentState').text(state);
     });
 
     socket.on('current-state', function(state) {
-        console.log(`Aktualni stav: ${state}.`);
+        console.log(`Aktuální stav: ${state}.`);
         if (state) {
             $('#currentState').text(state);
+            $('.button').removeClass('active').addClass('inactive');
+            $(`#btn${state}`).removeClass('inactive').addClass(`active`);
+        } else {
+            $('.button').removeClass('active').addClass('inactive');
         }
     });
 
+
+
     $(function() {
-        console.log('Dokument je pripraven.');
+        console.log('Dokument je připraven.');
 
         socket.emit('get-state');
+
+        $('.button').click(function() {
+            var clickedButton = $(this).attr('id');
+            socket.emit('state-change-2', clickedButton[clickedButton.length - 1]);
+            $('.button.active').removeClass('active').addClass('inactive');
+            $(this).removeClass('inactive').addClass('active');
+        });
     });
+
+
 </script>
-
-
-<script>
-    var socket = io.connect('https://bubr-matches.herokuapp.com/');
-
-    $('#btnA').click(function() {
-        socket.emit('state-change-2', 'A');
-    });
-
-    $('#btnB').click(function() {
-        socket.emit('state-change-2', 'B');
-    });
-
-    $('#btnC').click(function() {
-        socket.emit('state-change-2', 'C');
-    });
-
-    $('#btnD').click(function() {
-        socket.emit('state-change-2', 'D');
-    });
-</script>
-
 </body>
 </html>

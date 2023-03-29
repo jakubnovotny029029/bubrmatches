@@ -2,76 +2,122 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>FOTBAL-STAV</title>
+  <title>HOKEJ-STAV</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #F5F5F5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      font-size: 24px;
+      margin-bottom: 32px;
+      color: #333;
+      border-bottom: 2px solid #333;
+    }
+
+    h1 {
+      font-size: 64px;
+      color: #333;
+      margin-bottom: 64px;
+    }
+
+    #currentState {
+      font-size: 64px;
+      margin-bottom: 64px;
+    }
+
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    h2 {
+      font-size: 4rem;
+      margin-bottom: 2rem;
+    }
+
     .stateA {
-      color: purple;
+      color: #4681f4;
     }
     .stateB {
-      color: orange;
+      color: #4681f4;
     }
     .stateC {
-      color: pink;
+      color: #ff5252;
     }
     .stateD {
-      color: gray;
+      color: #ff5252;
     }
-    #currentState { font-size: 128px; }
   </style>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <a href="index.html">Homepage</a>
 
-<h2>Aktualni stav: <span id="currentState"></span></h2>
-
-<audio id="audio" src="taptap.mp3"></audio>
+<div class="container">
+  <h2>Aktuální stav: <span id="currentState"></span></h2>
+  <audio id="goalAudio" src="taptap.mp3"></audio>
+</div>
 
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
   var socket = io.connect('https://bubr-matches.herokuapp.com/');
-  var audio = new Audio("taptap.mp3");
-
-  socket.on('state-change-2', function(state) {
-    $('#currentState').removeClass().addClass('state' + state).text(state);
-    audio.currentTime = 0; // nastavíme čas přehrávání zvuku na začátek
-    audio.play(); // přehrajeme zvuk
-  });
-
-</script>
-<script>
-  var socket = io.connect('https://bubr-matches.herokuapp.com/');
 
   socket.on('connect', function() {
-    console.log('Spojeni se socketem bylo navazano.');
-    socket.emit('get-state-2');
+    console.log('Spojení se socketem bylo navázáno.');
+    socket.emit('get-state');
   });
 
   socket.on('disconnect', function() {
-    console.log('Spojeni se socketem bylo preruseno.');
+    console.log('Spojení se socketem bylo přerušeno.');
   });
 
   socket.on('state-change-2', function(state) {
-    console.log(`Stav zmenen na ${state}.`);
-    $('#currentState').removeClass().addClass('state' + state).text(state);
-    $('#audio')[0].play();
+    console.log(`Stav změněn na ${state}.`);
+    $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
+    if (state === 'C' || state === 'D') {
+      $('#goalAudio')[0].play();
+    }
   });
 
-  socket.on('current-state-2', function(state) {
-    console.log(`Aktualni stav: ${state}.`);
+  socket.on('current-state', function(state) {
+    console.log(`Aktuální stav: ${state}.`);
     if (state) {
-      $('#currentState').removeClass().addClass('state' + state).text(state);
+      $('#currentState').removeClass().addClass('state' + state).text(getStateText(state));
     }
   });
 
   $(function() {
-    console.log('Dokument je pripraven.');
-
-    socket.emit('get-state-2');
+    console.log('Dokument je připraven.');
+    socket.emit('get-state');
   });
+
+  function getStateText(state) {
+    if (state === 'A') {
+      return 'Útok domácích';
+    } else if (state === 'B') {
+      return 'Útok hostů';
+    } else if (state === 'C') {
+      return 'Gól domácích';
+    } else if (state === 'D') {
+      return 'Gól hostů';
+    } else {
+      return '';
+    }
+  }
 </script>
-
-
 </body>
 </html>
