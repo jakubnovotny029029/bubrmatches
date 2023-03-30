@@ -69,7 +69,6 @@
 <div class="container">
     <h2>Aktuální stav: <span id="currentState"></span></h2>
     <audio id="goalAudio" src="goal.mp3"></audio>
-    <audio id="tapAudio" src="taptap.mp3"></audio>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -77,7 +76,6 @@
 <script>
     var socket = io.connect('https://bubr-matches.herokuapp.com/');
     var goals = [];
-    var taps = [];
 
     socket.on('connect', function() {
         console.log('Spojení se socketem bylo navázáno.');
@@ -95,12 +93,6 @@
             var goalAudio = new Audio('goal.mp3');
             goals.push(goalAudio);
             goals.forEach(function (audio) {
-                audio.play();
-            });
-        } else if (state === 'A' || state === 'B') {
-            var tapAudio = new Audio('taptap.mp3');
-            taps.push(tapAudio);
-            taps.forEach(function (audio) {
                 audio.play();
             });
         }
