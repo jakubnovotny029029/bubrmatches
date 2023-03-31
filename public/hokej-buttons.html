@@ -122,46 +122,61 @@
                 alert('Názvy týmů byly uloženy.');
             });
         });
+
+        // Funkce pro nahrazení názvů týmů na tlačítkách
+        function updateTeamNames() {
+            var homeTeam = localStorage.getItem('homeTeam');
+            var awayTeam = localStorage.getItem('awayTeam');
+            $('#btnA').text(`Útok ${homeTeam}`);
+            $('#btnB').text(`Útok ${awayTeam}`);
+        }
+
+        $(function() {
+            console.log('Dokument je připraven.');
+
+            socket.emit('get-state');
+
+            // Aktualizujeme názvy týmů na tlačítkách
+            updateTeamNames();
+
+            // Po kliknutí na tlačítko změníme stav
+            $('.button').click(function() {
+                var clickedButton = $(this).attr('id');
+                socket.emit('state-change', clickedButton[clickedButton.length - 1]);
+                $('.button.active').removeClass('active').addClass('inactive');
+                $(this).removeClass('inactive').addClass('active');
+            });
+        });
+
+        // Připojíme se na server pomocí socket.io
+        var socket = io.connect('https://bubr-matches.herokuapp.com/');
+
+        // Aktualizujeme stav v HTML
+        socket.on('state-update', function(data) {
+            $('#currentState').text(data.currentState);
+        });
+
+        socket.on('state-change', function(state) {
+            $('#currentState').text(state);
+        });
+
+        socket.on('current-state', function(state) {
+            console.log(`Aktuální stav: ${state}.`);
+            if (state) {
+                $('#currentState').text(state);
+                $('.button').removeClass('active').addClass('inactive');
+                $(`#btn${state}`).removeClass('inactive').addClass(`active`);
+            } else {
+                $('.button').removeClass('active').addClass('inactive');
+            }
+        });
     </script>
 </head>
 <body>
+<button id="btnA" class="button">ÚTOK DOMÁCÍ</button>
+<button id="btnB" class="button">ÚTOK HOSTÉ</button>
+<button id="btnC" class="button">GÓL DOMÁCÍ</button>
+<button id="btnD" class="button">GÓL HOSTÉ</button>
 <script src="/socket.io/socket.io.js"></script>
-<script>
-    // Připojíme se na server pomocí socket.io
-    var socket = io.connect('https://bubr-matches.herokuapp.com/');
-
-    // Aktualizujeme stav v HTML
-    socket.on('state-update', function(data) {
-        $('#currentState').text(data.currentState);
-    });
-
-    socket.on('state-change', function(state) {
-        $('#currentState').text(state);
-    });
-
-    socket.on('current-state', function(state) {
-        console.log(`Aktuální stav: ${state}.`);
-        if (state) {
-            $('#currentState').text(state);
-            $('.button').removeClass('active').addClass('inactive');
-            $(`#btn${state}`).removeClass('inactive').addClass(`active`);
-        } else {
-            $('.button').removeClass('active').addClass('inactive');
-        }
-    });
-
-    $(function() {
-        console.log('Dokument je připraven.');
-
-        socket.emit('get-state');
-
-        $('.button').click(function() {
-            var clickedButton = $(this).attr('id');
-            socket.emit('state-change', clickedButton[clickedButton.length - 1]);
-            $('.button.active').removeClass('active').addClass('inactive');
-            $(this).removeClass('inactive').addClass('active');
-        });
-    });
-</script>
 </body>
 </html>
