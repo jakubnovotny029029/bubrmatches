@@ -102,14 +102,29 @@
             }
         }
     </style>
+    <script>
+        $(function() {
+            // načtení uložených hodnot
+            var homeTeam = localStorage.getItem('homeTeam');
+            var awayTeam = localStorage.getItem('awayTeam');
 
+            // zobrazení aktuálních hodnot
+            $('#homeTeam').val(homeTeam);
+            $('#awayTeam').val(awayTeam);
+
+            // při odeslání formuláře uložíme nové hodnoty
+            $('form').submit(function(e) {
+                e.preventDefault();
+                var newHomeTeam = $('#homeTeam').val();
+                var newAwayTeam = $('#awayTeam').val();
+                localStorage.setItem('homeTeam', newHomeTeam);
+                localStorage.setItem('awayTeam', newAwayTeam);
+                alert('Názvy týmů byly uloženy.');
+            });
+        });
+    </script>
 </head>
 <body>
-<button id="btnA" class="button">ÚTOK DOMÁCÍ</button>
-<button id="btnB" class="button">ÚTOK HOSTÉ</button>
-<button id="btnC" class="button">GÓL DOMÁCÍ</button>
-<button id="btnD" class="button">GÓL HOSTÉ</button>
-
 <script src="/socket.io/socket.io.js"></script>
 <script>
     // Připojíme se na server pomocí socket.io
@@ -135,8 +150,6 @@
         }
     });
 
-
-
     $(function() {
         console.log('Dokument je připraven.');
 
@@ -149,8 +162,6 @@
             $(this).removeClass('inactive').addClass('active');
         });
     });
-
-
 </script>
 </body>
 </html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>HOKEJ-BUTTONS-SETTINGS</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Nastavení názvů týmů</h1>
+<form>
+  <label for="homeTeam">Název domácího týmu:</label>
+  <input type="text" id="homeTeam" name="homeTeam"><br>
+
+  <label for="awayTeam">Název hostujícího týmu:</label>
+  <input type="text" id="awayTeam" name="awayTeam"><br>
+
+  <button type="submit">Uložit</button>
+</form>
+
+<script>
+  $(function() {
+    // načtení uložených hodnot
+    var homeTeam = localStorage.getItem('homeTeam');
+    var awayTeam = localStorage.getItem('awayTeam');
+
+    // zobrazení aktuálních hodnot
+    $('#homeTeam').val(homeTeam);
+    $('#awayTeam').val(awayTeam);
+
+    // při odeslání formuláře uložíme nové hodnoty
+    $('form').submit(function(e) {
+      e.preventDefault();
+      var newHomeTeam = $('#homeTeam').val();
+      var newAwayTeam = $('#awayTeam').val();
+      localStorage.setItem('homeTeam', newHomeTeam);
+      localStorage.setItem('awayTeam', newAwayTeam);
+      alert('Názvy týmů byly uloženy.');
+    });
+  });
+</script>
+</body>
+</html>
